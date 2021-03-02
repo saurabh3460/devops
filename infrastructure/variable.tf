@@ -12,3 +12,8 @@ variable "vpc_id" {
     type = string
     default = "vpc-0c616a64"
 }
+
+variable "inventory_path" {
+    type = string
+    default = "../playbooks/inventory"
+}

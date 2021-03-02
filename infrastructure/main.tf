@@ -10,7 +10,6 @@ terraform {
 provider "aws" {
     profile = "default"
     region = "ap-south-1"
-
 }
 
 resource "aws_security_group" "allow_ssh" {
@@ -32,7 +31,7 @@ resource "aws_security_group" "allow_ssh" {
     }
 }
 
-resource "aws_key_pair" "ansible"{
+resource "aws_key_pair" "ansible" {
     key_name = var.host01.key_name
     public_key = file("${abspath(path.cwd)}/ansible.pub")
 }
@@ -44,4 +43,7 @@ resource "aws_instance" "host01" {
     security_groups = [aws_security_group.allow_ssh.name]
 }
 
-
+resource "local_file" "host_ip" {
+    content  = aws_instance.host01.public_ip
+    filename = var.inventory_path
+}
