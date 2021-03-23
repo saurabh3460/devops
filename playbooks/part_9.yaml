@@ -1,0 +1,58 @@
+# Targeting specific Node
+---
+- hosts: all
+  become: true
+  # tasks:
+  pre_tasks: # it says run following task befaore any other play
+    - name: Update the CentOS
+      dnf:
+        update_only: true
+        update_cache: true
+      when: ansible_distribution == "CentOS"
+
+    - name: Update the Ubuntu
+      apt:
+        upgrade: dist
+        update_cache: true
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+
+- hosts: web_servers
+  become: true
+  tasks:
+    - name: install apache2 and add php support
+      apt:
+        name:
+          - apache2
+          - libapache2-mod-php
+        state: latest
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+
+    - name: install httpd and add php support for CentOS
+      dnf:
+        name:
+          - httpd
+          - php
+        state: latest
+      when: ansible_distribution == "CentOS"
+
+- hosts: db_servers
+  become: true
+  tasks:
+    - name: install mariadb
+      dnf:
+        name: mariadb
+        state: latest
+      when: ansible_distribution == "CentOS"
+
+- hosts: file_servers
+  become: true
+  tasks:
+    - name: Install samba package
+      package: # because package name of samba in both centos and ubuntu is same
+        name: samba
+        state: latest
+    # - name: install apache and php
+    #   package:
+    #     name:
+    #       - "{{ apache_package }}"
+    #       - "{{ php_package }}"

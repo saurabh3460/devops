@@ -1,0 +1,29 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    # - name: install apache2 and add php support
+    #   apt:
+    #     name:
+    #       - apache2
+    #       - libapache2-mod-php
+    #     state: latest
+    #     update_cache: yes
+    #   when: ansible_distribution in ["Debian", "Ubuntu"]
+
+    # - name: install httpd and add php support for CentOS
+    #   dnf:
+    #     name:
+    #       - httpd
+    #       - php
+    #     state: latest
+    #     update_cache: yes
+    #   when: ansible_distribution == "CentOS"
+
+    - name: install apache and php
+      package: # The generic module and it will use package manager correspond to the distro
+        name:
+          - "{{ apache_package }}"
+          - "{{ php_package }}"
+        state: latest
+        update_cache: yes

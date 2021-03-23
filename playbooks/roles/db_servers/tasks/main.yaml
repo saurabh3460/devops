@@ -1,0 +1,9 @@
+- name: install mariadb
+  dnf:
+    name: mariadb
+    state: latest
+  when: ansible_distribution == "CentOS"
+  tags:
+    - mariadb
+    - centos
+    - db

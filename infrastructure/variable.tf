@@ -7,13 +7,17 @@ variable "host01"  {
     }
 }
 
-
 variable "vpc_id" {
     type = string
-    default = "vpc-0c616a64"
+    default = "vpc-dc956bb7"
 }
 
 variable "inventory_path" {
     type = string
     default = "../playbooks/inventory"
+}
+
+variable "private_key_path" {
+    type = string
+    default = "../infrastructure/ansible"
 }

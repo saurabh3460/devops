@@ -1,0 +1,10 @@
+# inventory
+[web_servers]
+172.16.250.132
+172.16.250.133
+
+[db_servers]
+172.16.250.134
+
+[file_servers]
+172.16.250.135

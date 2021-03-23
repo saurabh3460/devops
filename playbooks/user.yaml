@@ -1,0 +1,14 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: create simone user
+      user:
+        name: simone
+        groups: root
+        state: present
+
+    - name: add ssh for simone
+      authorized_key:
+        user: simone
+        key: ""

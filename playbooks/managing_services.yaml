@@ -1,0 +1,56 @@
+---
+- hosts: all
+  become: true
+  pre_tasks:
+    - name: Update the CentOS
+      dnf:
+        update_only: true
+        update_cache: true
+      when: ansible_distribution == "CentOS"
+      tags: always
+
+    - name: Update the Ubuntu
+      apt:
+        upgrade: dist
+        update_cache: true
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+      tags: always
+
+- hosts: web_servers
+  become: true
+  tasks:
+    - name: install apache2 and add php support
+      apt:
+        name:
+          - apache2
+          - libapache2-mod-php
+        state: latest
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+      tags:
+        - apache
+        - apache2
+        - ubuntu
+        - php
+
+    - name: install httpd and add php support for CentOS
+      dnf:
+        name:
+          - httpd
+          - php
+        state: latest
+      when: ansible_distribution == "CentOS"
+      tags:
+        - centos
+        - httpd
+        - apache
+
+    # Not completed
+
+    - name: copy default html file for site
+      tags: apache, apache2
+      copy:
+        src: files/index.html
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: 0644

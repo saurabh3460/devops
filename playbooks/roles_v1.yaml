@@ -1,0 +1,91 @@
+---
+- hosts: all
+  become: true
+  pre_tasks:
+    - name: Update the CentOS
+      dnf:
+        update_only: true
+        update_cache: true
+      when: ansible_distribution == "CentOS"
+      tags: always
+
+    - name: Update the Ubuntu
+      apt:
+        upgrade: dist
+        update_cache: true
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+      tags: always
+
+- hosts: web_servers
+  become: true
+  tasks:
+    - name: install apache2 and add php support
+      apt:
+        name:
+          - apache2
+          - libapache2-mod-php
+        state: latest
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+      tags:
+        - apache
+        - apache2
+        - ubuntu
+        - php
+
+    - name: install httpd and add php support for CentOS
+      dnf:
+        name:
+          - httpd
+          - php
+        state: latest
+      when: ansible_distribution == "CentOS"
+      tags:
+        - centos
+        - httpd
+        - apache
+
+    - name: copy default html file for site
+      tags: apache, apache2
+      copy:
+        src: files/index.html
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: 0644
+
+- hosts: db_servers
+  become: true
+  tasks:
+    - name: install mariadb
+      dnf:
+        name: mariadb
+        state: latest
+      when: ansible_distribution == "CentOS"
+      tags:
+        - mariadb
+        - centos
+        - db
+
+- hosts: file_servers
+  become: true
+  tasks:
+    - name: Install samba package
+      package:
+        name: samba
+        state: latest
+      tags: samba
+
+- host: workstation
+  become: true
+  tasks:
+    - name: install unzip
+      package:
+        name: unzip
+    - name: intsall terraform
+      unarchive:
+        src: https://releases.hashicorp.com/terraform/0.14.8/terraform_0.14.8_openbsd_amd64.zip
+        dest: /user/local/bin
+        remote_src: yes
+        owner: root
+        group: root
+        mode: 0755
