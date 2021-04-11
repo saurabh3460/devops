@@ -1,3 +1,4 @@
+---
 - name: Create monitor group
   group:
     name: monitor
@@ -11,32 +12,34 @@
     system: yes
     state: present
 
-- name: Create /opt/prometheus
+- name: "Create {{ install_dir }}"
   file:
-    name: /opt/prometheus
+    name: "{{ install_dir }}"
     state: directory
 
 - name: Download node_exporter
   get_url:
-    url: https://github.com/prometheus/node_exporter/releases/download/v{{node_exporter_version}}/node_exporter-{{node_exporter_version}}.linux-amd64.tar.gz
-    dest: /opt/prometheus
+    url: "https://github.com/prometheus/node_exporter/releases/download/v{{node_exporter_version}}/node_exporter-{{node_exporter_version}}.linux-amd64.tar.gz"
+    dest: "{{ install_dir }}"
 
 - name: Unarchive node_exporter
   unarchive:
     remote_src: yes
-    src: /opt/prometheus/node_exporter-{{node_exporter_version}}.linux-amd64.tar.gz
-    dest: /opt/prometheus
+    src: "{{ install_dir }}/node_exporter-{{node_exporter_version}}.linux-amd64.tar.gz"
+    dest: "{{ install_dir }}"
 
 - name: Create symlink to node_exporter
   file:
-    src: /opt/prometheus/node_exporter-{{node_exporter_version}}.linux-amd64/node_exporter
-    path: /usr/bin/node_exporter
+    src: "{{ install_dir }}/node_exporter-{{node_exporter_version}}.linux-amd64/node_exporter"
+    path: "{{ node_exporter_symlink }}"
     state: link
 
 - name: install unit file to systemd
   template:
-    src: /template/node_exporter.service.j2
+    src: node_exporter.service.j2
     dest: /etc/systemd/system/node_exporter.service
+  notify: 
+    - Restart node_exporter
 
 - name: configure systemd to use service
   systemd:
@@ -45,11 +48,7 @@
     state: started
     name: node_exporter.service
 
-- name: restart node_exporter
-  systemd:
-    daemon_reload: yes
-    enabled: yes
-    state: started
-    name: node_exporter.service
-    # https://www.golinuxcloud.com/ansible-roles-directory-structure-tutorial/
-    # https://www.golinuxcloud.com/jinja2-template/
+
+
+# https://www.golinuxcloud.com/ansible-roles-directory-structure-tutorial/
+# https://www.golinuxcloud.com/jinja2-template/

@@ -1,9 +1,0 @@
-[Unit]
-Description=Service for node exporter to expose /metrics for prometheus
-
-[Service]
-User=monitor
-ExecStart=/usr/bin/node_exporter
-
-[Install]
-WantedBy=multi-user.target

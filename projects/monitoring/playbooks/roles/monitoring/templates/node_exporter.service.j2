@@ -1,0 +1,9 @@
+[Unit]
+Description=Service for node exporter to expose /metrics for prometheus
+
+[Service]
+User=monitor
+ExecStart="{{node_exporter_symlink}}"
+
+[Install]
+WantedBy=multi-user.target

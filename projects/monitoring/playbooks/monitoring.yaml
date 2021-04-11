@@ -1,5 +1,11 @@
 ---
-- hosts: all
+- hosts: web_servers
   become: true
   roles:
     - monitoring
+
+  handlers:
+    - name: Restart node_exporter
+      ansible.builtin.service:
+        name: node_exporter
+        state: restarted
