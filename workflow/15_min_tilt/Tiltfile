@@ -1,0 +1,18 @@
+print('Hello Tiltfile')
+
+k8s_yaml(['app.yaml', 'bar.yaml'])
+
+k8s_yaml(helm('chart_dir'))
+
+# docker build -t companyname/frontend ./frontend
+docker_build("companyname/frontend", "frontend")
+
+# docker build -t companyname/frontend -f frontend/Dockerfile.dev frontend
+docker_build("companyname/frontend", "frontend", dockerfile="frontend/Dockerfile.dev")
+
+# docker build -t companyname/frontend --build-arg target=local frontend
+docker_build("companyname/frontend", "frontend", build_args={"target": "local"})
+
+# Watch
+
+k8s_resource('frontend', port_forwards='9000')
