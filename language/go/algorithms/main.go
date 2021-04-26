@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/saurabh3460/algorithms/sort"
+	"github.com/saurabh3460/algorithms/common"
+	_ "github.com/saurabh3460/algorithms/sort"
 )
 
 // func Reverse(input []int) []int {
@@ -18,6 +19,8 @@ import (
 // }
 
 func main() {
-	var input = []int{2, 4, 6, 3, 5, 74}
-	fmt.Println(sort.Sort(input))
+	// var input = []int{2, 4, 6, 3, 5, 74}
+	// fmt.Println(sort.Sort(input))
+	n := common.RecureFact(10)
+	fmt.Println(n)
 }
