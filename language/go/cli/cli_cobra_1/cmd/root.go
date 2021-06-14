@@ -10,22 +10,13 @@ import (
   "github.com/spf13/viper"
 )
 
-/*
-Whenever the command run or called it will first execute all the functions in the command’s
-initialization and then it will run the execute method.
-*/
 var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
   Use:   "dadjoke",
   Short: "A brief description of your application",
-  Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+  Long:  `A longer description...`,
   // Uncomment the following line if your bare application
   // has an action associated with it:
   //  Run: func(cmd *cobra.Command, args []string) { },
