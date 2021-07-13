@@ -8,22 +8,21 @@
 
 ## Phase One: 
 
-#### 1 step 
+### 1 step 
 Write web app with postgreSQL or redis(optional) and Dockerfile. 
+[link](https://scotch.io/@walugembe-peter/build-a-restful-api-with-go-and-postgresql)
 
-#### 2 Write Helm chart 
-
-#### 3 Write argocd manifest use (ClI to manage)
+### 2 Write Helm chart 
+ 3 Write argocd manifest use (ClI to manage)
 
 ## Phase Two:
 
-#### Step 1 
+### Step 1 
 Setup logging.
 
-#### Step 2
+## Step 2
 Setup backup for psql inside cluster.
-
-#### Step 3 (can be contine at any phase)
+ Step 3 (can be contine at any phase)
 find tools for network testing or load testing.
 
 ## Phase Three:
