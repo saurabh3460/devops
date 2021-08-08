@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: app-cert
+  namespace: dev
+spec: 
+  dnsNames:
+    - argocd.codecrux.com
+  secretName: app-cert
+  issuerRef:
+    name: letsencrypt-prod
+    kind: Issuer
