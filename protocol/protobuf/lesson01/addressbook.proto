@@ -1,0 +1,6 @@
+syntax = "proto3";
+package lesson01
+
+
+import "google/protobuf/timestamp.proto";
+
