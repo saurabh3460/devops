@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
+	//"math/rand"
+	//
+	//"runtime"
+	//
+	//"time"
 
-	"runtime"
-
-	"time"
-
-	term "github.com/gesquive/cli"
+	//term "github.com/gesquive/cli"
 	"github.com/spf13/cobra"
+	"github.com/imdario/mergo"
 )
 
 const (
@@ -35,31 +36,38 @@ func main() {
 	var runCmd = &cobra.Command{
 		Use: "run",
 		Run: func(cmd *cobra.Command, args []string) {
-			runtime.GOMAXPROCS(runtime.NumCPU())
-			rand.Seed(time.Now().UnixNano())
-			if option.debug {
-				term.SetPrintLevel(term.LevelDebug)
-			}
-			fmt.Println(args)
-			//var err error
-			if len(args) < 1 {
-				runSingleJob("", option)
-			} else {
-				runSingleJob(args[0], option)
-			}
-
+			fmt.Println(cmd.Flag("command").Value)
+			r1 := RunnerFlags{true, "tes"}
+			r2 := RunnerFlags{false, "user1"}
+			mergo.Merge(&r1, r2)
+			fmt.Println("the margo", r1)
+			//runtime.GOMAXPROCS(runtime.NumCPU())
+			//rand.Seed(time.Now().UnixNano())
+			//if option.debug {
+			//	term.SetPrintLevel(term.LevelDebug)
+			//}
+			//fmt.Println(args)
+			////var err error
+			//if len(args) < 1 {
+			//	runSingleJob("", option)
+			//} else {
+			//	runSingleJob(args[0], option)
+			//}
 		},
 	}
 
 	var detailCmd = &cobra.Command{
-		Use: "detail",
+		Use:   "detail",
 		Short: "use to get detail on topic",
-		Long: "use detail to get detail description of a topics",
+		Long:  "use detail to get detail description of a topics",
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Println("detail:", args)
 			fmt.Println(cmd.Flag("name").Value)
 			fmt.Println(cmd.Flag("get").Value)
+			fmt.Println(cmd.Flag("command").Value)
+
 		},
+
 	}
 
 	rootCmd.PersistentFlags().BoolVarP(&option.debug, "debug", "v", false, "debug")
@@ -73,6 +81,8 @@ func main() {
 	rootCmd.Execute()
 }
 
-func runSingleJob(path string, opts RunnerFlags) {
+func runSingleJob(path string, opts RunnerFlags) (name string)  {
 	fmt.Println(path, opts)
+	name = ""
+	return
 }
