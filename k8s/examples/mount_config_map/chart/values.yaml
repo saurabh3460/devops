@@ -7,53 +7,35 @@ replicaCount: 1
 app:
   containerPort: 8000
   port: 3000
-  hosts: [
-    {
-      tag: "primary",
-      address: "primary.rapiscan.systems",
-      rules: [
-        accept: {
-          type: "copy",
-          location: "discard"
-        },
-        reject: {
-            type: "move",
-            location: "shared"
-        }
-      ]
-    },
-    {
-      tag: "secondary",
-      address: "secondary.rapiscan.systems",
-      rules: [
-        accept: {
-          type: "copy",
-          location: "discard"
-        },
-        reject: {
-            type: "move",
-            location: "shared"
-        }
-      ]
-    },
-  ]
-  archive_locations: [
-    {
-      name: "shared",
-      type: "local",
-      path: "/shared"
-    },
-    {
-      name: "discard",
-      type: "local",
-      path: "/discard"
-    },
-    {
-      name: "upload",
-      type: "local",
-      path: "/upload"
-    }
-  ]
+  hosts: 
+  - tag: primary
+    address: "primary.rapiscan.systems"
+    rules:
+    - accept:
+        type: "copy"
+        location: "discard"
+    - reject:
+        type: "move"
+        location: "shared"
+  - tag: "secondary"
+    address: "secondary.rapiscan.systems"
+    rules:
+    - accept:
+        type: "copy"
+        location: "discard"
+    - reject:
+        type: "move"
+        location: "upload"
+  archive_locations: 
+  - name: "shared"
+    type: "local"
+    path: "/shared"
+  - name: "discard"
+    type: "local"
+    path: "/discard"
+  - name: "upload"
+    type: "local"
+    path: "/upload"
 
 image:
   repository: alpine

@@ -33,8 +33,8 @@ override.tf.json
 
 ### Vagrant ###
 # General
-.vagrant/
-
+**/.vagrant/
+.vagrant
 # Log files (if you are creating logs in debug mode, uncomment this)
 # *.log
 
