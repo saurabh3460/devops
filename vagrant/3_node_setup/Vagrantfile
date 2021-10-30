@@ -1,0 +1,46 @@
+$workstations = {
+  "primary": { node_ip: "192.168.50.6" },
+  "secondary": { node_ip: "192.168.50.7" },
+  "ree": { node_ip: "192.168.50.8" }
+}
+
+ansible_groups = {
+  "workstations": ["primary", "secondary"],
+  "rule_engine": ["ree"]
+}
+
+Vagrant.configure(2) do |config|
+  $workstations.each_with_index do |(role, settings), idx|
+    addr = settings[:ip] || settings[:node_ip] || settings[:ansible_host]
+    config.vm.define role do |define|  
+      define.vm.box = "ubuntu/focal64"
+      define.vm.provider "virtualbox" do |vb|
+        vb.memory = 2048
+        vb.cpus = 1
+      end
+
+      define.vm.network "private_network", ip: addr
+
+      if idx == $workstations.size - 1
+        define.vm.provision "ansible" do |ansible|
+          ansible.compatibility_mode = '2.0'
+          ansible.playbook = "main.yaml"
+          ansible.limit = "all"
+          ansible.host_vars = $workstations
+          ansible.groups = ansible_groups
+          ansible.extra_vars = { "addr_key": "node_ip" }
+        end
+      
+        if role == :ree
+          define.vm.provision "k3s", type: :ansible do |ansible|
+            ansible.compatibility_mode = '2.0'
+            ansible.playbook = "../k3s_multimaster_cluster_ansible/single_node.yml"
+            ansible.limit = "all"
+            ansible.groups = { "first_master": ["ree"] }
+            ansible.extra_vars = {"master_ip": addr }
+          end
+        end
+      end
+    end
+  end
+end
