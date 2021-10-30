@@ -1,17 +1,17 @@
-# Update:
+## This Repo is for the usage of tools like ansible, k8s, vagrant, pulumi etc
 
-There going to be more things for weekly!
-so we can plane for weekend,
+### Upcomming Updates
 
-## This Repo is the demo for the usage of tools like ansible, terraform etc
+1. Azure infrastructure as code with Pulumi (golang).
+2. Kubernetes monitoring and alerting tools.
+3. Chaos engineering tools.
+    1. [Chaos Mesh](https://chaos-mesh.org/)
+    2. [Litmus chaos](https://litmuschaos.io/)
+    3. [Chaos toolkit](https://chaostoolkit.org/)
+    4. [Full list](https://www.gremlin.com/community/tutorials/chaos-engineering-tools-comparison/)
+4. Real World projects like open source projects to run them on production environments
 
-! Links
-[ad-hoc Commands](https://youtu.be/4REljLsOnXk?list=PLT98CRl2KxKEUHie1m24-wkyHpEsa4Y70&t=400)
-
-### Upcomming addons
-
-1. Provisioning k8s via terraform on cloud (Azure).
-3. Will add Tanka for writing K8s manifest files.
+> If you interested to talk and learn together please mail at saurabh3460@gmail.com
 
 ### Asible
 #### setup demo for showing multistage environments structure and inheriting variable
