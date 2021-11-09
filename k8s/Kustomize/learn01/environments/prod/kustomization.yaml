@@ -1,0 +1,8 @@
+bases:
+  - ../../application
+
+resources:
+  - namespace.yaml
+  - deployment.yaml
+  - service.yaml
+  - configmap.yaml
