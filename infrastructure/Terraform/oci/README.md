@@ -1,0 +1,1 @@
+[OCI provider doc](https://registry.terraform.io/providers/hashicorp/oci/latest/docs)

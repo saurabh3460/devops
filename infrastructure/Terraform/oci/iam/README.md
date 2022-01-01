@@ -1,7 +1,11 @@
-To preview
+To preview:
 
-
+```sh
 terraform plan -var 'tenancy_ocid=$T'
+```
 
+To apply/create:
 
-terraform apply -v
+```sh
+terraform apply -var 'tenancy_ocid=$T'
+```

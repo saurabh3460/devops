@@ -1,1 +1,0 @@
-(Applying Security Group changes to aws_instance should update, not destroy/recreate)[https://github.com/hashicorp/terraform/issues/14416]
