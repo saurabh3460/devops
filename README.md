@@ -1,8 +1,8 @@
-## This Repo is for the usage of tools like ansible, k8s, vagrant, pulumi etc
+## This Repo is for the usage of tools like ansible, k8s, vagrant, Terraform etc
 
 ### Upcomming Updates
 
-1. Azure infrastructure as code with Pulumi (golang).
+1. Infrastructure as code with Terraform.
 2. Kubernetes monitoring and alerting tools.
 3. Chaos engineering tools.
     1. [Chaos Mesh](https://chaos-mesh.org/)
