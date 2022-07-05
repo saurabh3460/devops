@@ -23,3 +23,8 @@ docker run --name prometheus \
 [configuration](https://prometheus.io/docs/prometheus/latest/configuration/configuration/)
 
 https://www.metricfire.com/blog/understanding-the-prometheus-rate-function/
+
+https://chronosphere.io/learn/an-introduction-to-the-four-primary-types-of-prometheus-metrics/
+
+/home/saurabh/Desktop/devops/k8s/monitoring
+
