@@ -1,7 +1,10 @@
 package todo
 
 import (
+	"encoding/json"
 	"errors"
+	"fmt"
+	"os"
 	"time"
 )
 
@@ -38,9 +41,45 @@ func (t *Todos) Complete(index int) error {
 
 func (t *Todos) Delete(index int) error {
 	ls := *t
+
 	if index <= 0 || index > len(ls) {
 		return errors.New("Index out bound")
 	}
 
+	*t = append(ls[:index-1], ls[index:]...)
+
 	return nil
+}
+
+func (t *Todos) Load(filename string) error {
+	file, error := os.ReadFile(filename)
+
+	if error != nil {
+		if errors.Is(error, os.ErrNotExist) {
+			fmt.Println("No file found")
+			return nil
+		}
+		return error
+	}
+
+	if len(file) == 0 {
+		// return errors.New("Empty file")
+		return nil
+	}
+
+	error = json.Unmarshal(file, t)
+	if error != nil {
+		return error
+	}
+
+	return nil
+}
+
+func (t *Todos) Store(filename string) error {
+	data, error := json.Marshal(t)
+	if error != nil {
+		return error
+	}
+
+	return os.WriteFile(filename, data, 0644)
 }
