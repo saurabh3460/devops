@@ -40,3 +40,6 @@ override.tf.json
 
 ### Vagrant Patch ###
 *.box
+
+projects/monitoring/on_docker/data
+projects/monitoring/on_docker/grafana
