@@ -13,13 +13,14 @@ import (
 )
 
 const (
+	HOST        = "localhost"
 	DB_USER     = "postgres"
-	DB_PASSWORD = "12345678"
-	DB_NAME     = "movies"
+	DB_PASSWORD = "postgres"
+	DB_NAME     = "main"
 )
 
 func setupDB() *sql.DB {
-	dsn := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", DB_USER, DB_PASSWORD, DB_NAME)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", HOST, DB_USER, DB_PASSWORD, DB_NAME)
 	db, err := sql.Open("postgres", dsn)
 	checkError(err)
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -38,7 +39,7 @@ func checkError(err error) {
 
 func init() {
 	// sql.Register("postgres", &PSDriver{})
-
+	setupDB()
 }
 
 func main() {

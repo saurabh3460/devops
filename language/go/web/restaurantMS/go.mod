@@ -1,8 +1,10 @@
-module gitlab.com/saurabh3460/devops/language/web/restaurantMS
+module restaurantMS
 
-go 1.16
+go 1.18
 
 require (
 	github.com/gorilla/mux v1.8.0
-	github.com/lib/pq v1.10.4
+	github.com/lib/pq v1.10.7
 )
+
+require github.com/golang-jwt/jwt/v4 v4.4.2 // indirect

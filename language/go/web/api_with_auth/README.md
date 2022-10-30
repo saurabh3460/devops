@@ -29,7 +29,7 @@ find tools for network testing or load testing.
 
 ### Step 1:
 Use different autoscaling-strategies.
-Can use caos framework.
+Can use chaos framework.
 
 ### Step 2:
 Setup monitoring tool
