@@ -3,6 +3,7 @@ package controllers
 import (
 	"auth-mongo/database"
 	"auth-mongo/helpers"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -25,8 +26,16 @@ func HashPassword(password string) string {
 	return string(bytes)
 }
 
-func VerifyPassword() {
+func VerifyPassword(userPassword string, providedPassword string) (bool, string) {
+	err := bcrypt.CompareHashAndPassword([]byte(providedPassword), []byte(userPassword))
+	check := true
+	msg := ""
 
+	if err != nil {
+		msg = fmt.Sprintf("email of password is incorrect")
+		check = false
+	}
+	return check, msg
 }
 
 func Signup(c *gin.Context) {
