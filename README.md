@@ -2,7 +2,8 @@
 
 ### Upcomming Updates
 
-1. Infrastructure as code with Terraform.
+1. Infrastructure as code with Terraform. <br>
+    1.1 EKS 
 2. Kubernetes monitoring and alerting tools.
 3. Chaos engineering tools.
     1. [Chaos Mesh](https://chaos-mesh.org/)
@@ -11,7 +12,6 @@
     4. [Full list](https://www.gremlin.com/community/tutorials/chaos-engineering-tools-comparison/)
 4. Real World projects like open source projects to run them on production environments
 
-> If you interested to talk and learn together please mail at saurabh3460@gmail.com
 
 ### Ansible
 
