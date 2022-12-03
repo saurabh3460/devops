@@ -86,9 +86,12 @@ func Signup(c *gin.Context) {
 	user.Updated_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
 	user.ID = primitive.NewObjectID()
 	user.User_id = user.ID.Hex()
+	// TODO: improve error handling for GenerateAllToken
 	token, refreshToken, _ := helpers.GenerateAllToken(*user.Email, *user.First_name, *user.Last_name, *user.User_type, user.User_id)
 	user.Token = &token
 	user.Refresh_token = &refreshToken
+	password := HashPassword(*user.Password)
+	user.Password = &password
 
 	resultInsertionNumber, insertErr := userColl.InsertOne(ctx, user)
 	if insertErr != nil {
@@ -99,6 +102,31 @@ func Signup(c *gin.Context) {
 }
 
 func Login(c *gin.Context) {
+	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+	defer cancel()
+	var user models.User
+	var foundUser models.User
+
+	if err := c.BindJSON(&user); err != nil {
+		c.JSON(BadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err := userColl.FindOne(ctx, bson.M{"email": user.Email}).Decode(&foundUser)
+	if err != nil {
+		c.JSON(InternalServerError, gin.H{"error": "email is incorrect"})
+		return
+	}
+
+	validPassword, msg := VerifyPassword(*user.Password, *foundUser.Password)
+	if !validPassword {
+		c.JSON(InternalServerError, gin.H{"error": msg})
+		return
+	}
+	token, refereshToken, _ := helpers.GenerateAllToken(*foundUser.Email, *foundUser.First_name, *foundUser.Last_name, *foundUser.User_type, *&foundUser.User_id)
+	_ = token
+	_ = refereshToken
+	c.JSON(BadRequest, foundUser)
 
 }
 
@@ -109,6 +137,7 @@ func GetUser(c *gin.Context) {
 	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	// 	return
 	// }
+	c.JSON(http.StatusOK, "Ok")
 }
 
 func GetUsers(c *gin.Context) {

@@ -8,10 +8,10 @@ import (
 
 var handler = map[string][]gin.HandlerFunc{
 	"signup": {controller.Signup},
-	"Login":  {controller.Login},
+	"login":  {controller.Login},
 }
 
 func AuthRoutes(routes *gin.Engine) {
-	routes.POST("user/signup", handler["signup"]...)
-	routes.POST("user/login", handler["login"]...)
+	routes.POST("/users/signup", handler["signup"]...)
+	routes.POST("/users/login", handler["login"]...)
 }

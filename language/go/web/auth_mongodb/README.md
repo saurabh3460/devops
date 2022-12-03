@@ -1,2 +1,17 @@
-Todo
-1. JWT Auth
+### Install
+
+
+```sh
+npm install -g nodemon
+```
+
+
+Steps:
+
+```
+docker-compose up
+```
+
+```sh
+nodemon --exec go run main.go --signal SIGTERM
+```
