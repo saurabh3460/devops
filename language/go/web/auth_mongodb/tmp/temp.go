@@ -2,45 +2,62 @@ package main
 
 import (
 	"fmt"
-	"time"
-
-	"github.com/golang-jwt/jwt/v4"
+	"sync"
 )
 
-type SignedDetails struct {
-	Email      string
-	First_name string
-	Last_name  string
-	Uid        string
-	User_type  string
-	jwt.RegisteredClaims
+/*
+Th eidea is that the program will give a result based on the performances of the players of each
+team (a json file). Each player (player.go file) will write in a channel the amout of
+yellow / red cards he got from the game, based on his agressvity and a random number generated.
+And the game.go file will read from the channels every time and update the result.
+*/
+
+var teamA = team{name: "a", players: []players{
+	{number: 1}, {number: 2}, {number: 3}, {number: 4},
+}}
+
+type players struct {
+	number int
+	yellow int
+	red    int
 }
 
-var secret []byte
+type team struct {
+	name    string
+	players []players
+}
+
+type Performance struct {
+	// based on agressvity and a generated number
+	yellow int
+	red    int
+}
+
+// a player func to write to performance channel
+// a game func to read from channel to update result and update players yellow and red
+
+func player(performance chan Performance, wg *sync.WaitGroup) {
+	// wg.Add(1)
+	fmt.Println("player operation....")
+	performance <- Performance{yellow: 1, red: 2}
+	wg.Done()
+}
+
+func game(performance chan Performance, wg *sync.WaitGroup) {
+	// wg.Add(1)
+	fmt.Println("game operation....")
+	input := <-performance
+	fmt.Println(input)
+	wg.Done()
+}
 
 func main() {
-	claims := SignedDetails{
-		Email:      "saurabh@gmail.com",
-		First_name: "saurabh",
-		Last_name:  "sy",
-		Uid:        "88",
-		User_type:  "editor",
-		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Local().Add(time.Hour * time.Duration(24))),
-		},
-	}
-	token, _ := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString(secret)
-
-	// parse, validate
-	Ptoken, _ := jwt.ParseWithClaims(token, &SignedDetails{},
-		func(token *jwt.Token) (interface{}, error) {
-			return secret, nil
-		})
-	// fmt.Println(Ptoken, err)
-	claims, ok := Ptoken.Claims.(SignedDetails)
-	/*
-		Ptoken.Claims.(SignedDetails) because claims can be of type Claims interface and it can be anytyhing which impliments Claim interface so through assertion we can check and get values
-
-	*/
-	fmt.Println(Ptoken, ok)
+	var wg sync.WaitGroup
+	performance := make(chan Performance)
+	wg.Add(1)
+	player(performance, &wg)
+	wg.Add(1)
+	game(performance, &wg)
+	wg.Wait()
+	fmt.Println("all done ")
 }

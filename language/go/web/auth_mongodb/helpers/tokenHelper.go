@@ -2,7 +2,6 @@ package helpers
 
 import (
 	"auth-mongo/database"
-	"context"
 	"log"
 	"os"
 	"time"
@@ -61,5 +60,5 @@ func GenerateAllToken(email string, firstName string, lastName string, userType 
 }
 
 func UpdateAllTokens(signedToken, signedRefreshToken, userId string) {
-	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+	// var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 }

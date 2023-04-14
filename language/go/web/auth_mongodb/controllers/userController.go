@@ -21,7 +21,9 @@ var (
 	validate            = validator.New()
 	BadRequest          = http.StatusBadRequest
 	InternalServerError = http.StatusInternalServerError
+	OK                  = http.StatusOK
 )
+
 var userColl = database.OpenCollection(database.Client, "user")
 
 func HashPassword(password string) string {
@@ -54,6 +56,7 @@ func Signup(c *gin.Context) {
 		c.JSON(BadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
 	validationErr := validate.Struct(user)
 	if validationErr != nil {
 		c.JSON(BadRequest, gin.H{"error": validationErr.Error()})
@@ -126,9 +129,11 @@ func Login(c *gin.Context) {
 	token, refereshToken, _ := helpers.GenerateAllToken(*foundUser.Email, *foundUser.First_name, *foundUser.Last_name, *foundUser.User_type, *&foundUser.User_id)
 	_ = token
 	_ = refereshToken
-	c.JSON(BadRequest, foundUser)
+	c.JSON(OK, foundUser)
 
 }
+
+// https://passage.id/post/how-refresh-tokens-work-a-complete-guide-for-beginners
 
 func GetUser(c *gin.Context) {
 

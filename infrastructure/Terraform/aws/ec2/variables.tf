@@ -18,8 +18,8 @@ variable "instance_keypair" {
 # AWS EC2 Instance Type - List
 variable "instance_type_list" {
   description = "EC2 Instance Type"
-  type = list(string)
-  default = ["t2.micro", "t3.small", "t3.large"]  
+  type = set(string)
+  default = ["t2.micro", "t3.small", "t3.large", "t3.large"]  
 }
 
 # AWS EC2 Instance Type - Map
@@ -32,3 +32,13 @@ variable "instance_type_map" {
     "prod" = "t3.large"
   }
 }
+
+variable "ingress" {
+  description = "EC2 Instance Type"
+  type = object({cidr=string, port=number })
+  default = {
+    cidr = "0.0.0.0/0"
+    port = 22
+  }
+}
+
