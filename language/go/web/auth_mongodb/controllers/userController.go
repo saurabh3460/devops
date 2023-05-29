@@ -127,10 +127,12 @@ func Login(c *gin.Context) {
 		return
 	}
 	token, refereshToken, _ := helpers.GenerateAllToken(*foundUser.Email, *foundUser.First_name, *foundUser.Last_name, *foundUser.User_type, *&foundUser.User_id)
-	_ = token
-	_ = refereshToken
-	c.JSON(OK, foundUser)
-
+	helpers.UpdateAllTokens(token, refereshToken, foundUser.User_id)
+	if err != nil {
+		c.JSON(InternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(OK, gin.H{"token": foundUser.Token, "referesh_token": foundUser.Refresh_token})
 }
 
 // https://passage.id/post/how-refresh-tokens-work-a-complete-guide-for-beginners
@@ -146,5 +148,5 @@ func GetUser(c *gin.Context) {
 }
 
 func GetUsers(c *gin.Context) {
-
+	c.JSON(http.StatusOK, "Ok")
 }
