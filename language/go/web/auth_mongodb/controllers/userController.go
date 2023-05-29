@@ -144,9 +144,11 @@ func GetUser(c *gin.Context) {
 	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	// 	return
 	// }
+
 	c.JSON(http.StatusOK, "Ok")
 }
 
 func GetUsers(c *gin.Context) {
-	c.JSON(http.StatusOK, "Ok")
+	fmt.Println(c.Keys["email"])
+	c.JSON(http.StatusOK, "Oks")
 }
