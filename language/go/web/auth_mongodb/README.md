@@ -1,14 +1,12 @@
-### Install
-
+# Install
 
 ```sh
 npm install -g nodemon
 ```
 
+#### Steps:
 
-Steps:
-
-```
+```sh
 docker-compose up
 ```
 
