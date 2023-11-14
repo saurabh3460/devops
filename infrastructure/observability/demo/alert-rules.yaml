@@ -1,0 +1,39 @@
+
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: deployment-replica-state
+  namespace: mon
+spec:
+  groups:
+  - name: deployment
+    rules:
+    - alert: DeploymentReplicasState
+      expr: kube_deployment_status_replicas_ready/kube_deployment_spec_replicas < 1
+      for: 5m
+      annotations:
+        description: "Deployment `{{ $labels.namespace }}/{{ $labels.deployment }}` on cluster `{{ $labels.cluster }}` doesn't have desired replicas"
+        summary: "Deployment {{ $labels.deployment }} doesn't have desired replicas"
+      labels:
+        severity: warning
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+  name: certicates-not-ready
+  namespace: mon
+spec:
+  groups:
+  - name: certificate
+    rules:
+    - alert: CertManagerCertNotReady
+      expr: |
+        max by (name, exported_namespace, namespace, condition) (
+          certmanager_certificate_ready_status{condition!="True"} == 1
+        )
+      for: 10m
+      annotations:
+        summary: 'The cert `{{ $labels.namespace }}/{{ $labels.name }}` on cluster `{{ $labels.cluster }}` is not ready to serve traffic.'
+        description: 'This certificate `{{ $labels.namespace }}/{{ $labels.name }}` has not been ready to serve traffic for at least 10m. If the cert is being renewed or there is another valid cert, the ingress controller _may_ be able to serve that instead.'
+      labels:
+        severity: 'critical'
